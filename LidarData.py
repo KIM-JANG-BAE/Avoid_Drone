@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import serial
 import math
 import glob
@@ -96,55 +98,55 @@ def choice_weight(ser, tmpString, flag2c):
             elif count_jb >= 1:
                 for _ in range(len(lidar_data.Degree_angle) - 1):
                     if (end <= start <= lidar_data.Degree_angle[0] and False) or (lidar_data.Degree_angle[_] <= start <= lidar_data.Degree_angle[_+1]):
-                        print(f'start = {start} lidar_data.Degree_angle[_] = {lidar_data.Degree_angle[_]}  lidar_data.Degree_angle[_+1] = {lidar_data.Degree_angle[_+1]}')
+                        #print(f'start = {start} lidar_data.Degree_angle[_] = {lidar_data.Degree_angle[_]}  lidar_data.Degree_angle[_+1] = {lidar_data.Degree_angle[_+1]}')
                         finish = True
 
             if finish:
                 break
 
             for _ in range(len(lidar_data.Degree_angle)):
-                if 15 <= lidar_data.Degree_angle[_] <= 30 and lidar_data.Distance_i[_] <= 1:
+                if 15 <= lidar_data.Degree_angle[_] <= 30 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['right_60'] -= 1
 
-                elif 30 <= lidar_data.Degree_angle[_] <= 45 and lidar_data.Distance_i[_] <= 1:
+                elif 30 <= lidar_data.Degree_angle[_] <= 45 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['right_60'] -= 1
                     wd['right_45'] -= 1
 
-                elif 45 <= lidar_data.Degree_angle[_] <= 60 and lidar_data.Distance_i[_] <= 1:
+                elif 45 <= lidar_data.Degree_angle[_] <= 60 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['right_45'] -= 1
                     wd['right_30'] -= 1
 
-                elif 60 <= lidar_data.Degree_angle[_] <= 75 and lidar_data.Distance_i[_] <= 1:
+                elif 60 <= lidar_data.Degree_angle[_] <= 75 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['right_30'] -= 1
                     wd['right_15'] -= 1
 
-                elif 75 <= lidar_data.Degree_angle[_] <= 90 and lidar_data.Distance_i[_] <= 1:
+                elif 75 <= lidar_data.Degree_angle[_] <= 90 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['right_15'] -= 1
                     wd['right'] -= 1
 
-                elif 90 <= lidar_data.Degree_angle[_] <= 105 and lidar_data.Distance_i[_] <= 1:
+                elif 90 <= lidar_data.Degree_angle[_] <= 105 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['right'] -= 1
 
-                elif 255 <= lidar_data.Degree_angle[_] <= 270 and lidar_data.Distance_i[_] <= 1:
+                elif 255 <= lidar_data.Degree_angle[_] <= 270 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['left'] -= 1
 
-                elif 270 <= lidar_data.Degree_angle[_] <= 285 and lidar_data.Distance_i[_] <= 1:
+                elif 270 <= lidar_data.Degree_angle[_] <= 285 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['left'] -= 1
                     wd['left_15'] -= 1
 
-                elif 285 <= lidar_data.Degree_angle[_] <= 300 and lidar_data.Distance_i[_] <= 1:
+                elif 285 <= lidar_data.Degree_angle[_] <= 300 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['left_15'] -= 1
                     wd['left_30'] -= 1
 
-                elif 300 <= lidar_data.Degree_angle[_] <= 315 and lidar_data.Distance_i[_] <= 1:
+                elif 300 <= lidar_data.Degree_angle[_] <= 315 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['left_30'] -= 1
                     wd['left_45'] -= 1
 
-                elif 315 <= lidar_data.Degree_angle[_] <= 330 and lidar_data.Distance_i[_] <= 1:
+                elif 315 <= lidar_data.Degree_angle[_] <= 330 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['left_45'] -= 1
                     wd['left_60'] -= 1
 
-                elif 330 <= lidar_data.Degree_angle[_] <= 345 and lidar_data.Distance_i[_] <= 1:
+                elif 330 <= lidar_data.Degree_angle[_] <= 345 and lidar_data.Distance_i[_] <= 2.5 and lidar_data.Distance_i[_] > 0.1:
                     wd['left_60'] -= 1
 
             tmpString = ""
@@ -156,11 +158,10 @@ def choice_weight(ser, tmpString, flag2c):
         b = ''
         flag2c = False
 
-    print(wd)
+    #print(wd)
 
     max_value = max(wd.values())
-    if max_value <= 20:
-        print('avoid direction : back')
+    if max_value <= 10:
         return 'back'
     max_weight_direction = [key for key,value in wd.items() if value == max(wd.values())]
 
@@ -209,11 +210,12 @@ def main():
     firebase_admin.initialize_app(cred)
     db = firestore.client()
     doc_ref_avoid = db.collection("Capston").document("drone")
-
-    #avoid_start = {"header": "avoid_start"}
-    #avoid_finish = {"header": "avoid_finish"}
    
-    max_iterations = 5  # 5번 반복
+       
+    avoid_start = {"header": "avoid_start"}
+    avoid_finish = {"header": "avoid_finish"}
+   
+    max_iterations = 3  # 5번 반복
     # 최종 방향 결정을 위한 변수 추가
    
     start_avoid = False
@@ -250,17 +252,17 @@ def main():
             count_list = 2
            
             for _ in range(len(lidar_data.Degree_angle)):
-                if (lidar_data.Degree_angle[_] >= 355) or (lidar_data.Degree_angle[_] <= 5):
+                if (lidar_data.Degree_angle[_] >= 352) or (lidar_data.Degree_angle[_] <= 8):
                     count_list = 0  
-                    if lidar_data.Distance_i[_] <= 0.2:
+                    if lidar_data.Distance_i[_] <= 3 and lidar_data.Distance_i[_] > 0.1:
                          count_avoid += 1
                          start_avoid = True
-                         print('avoid')
+                         #print('avoid')
                          count_list = 1
                
                
             if (count_list == 0):
-                print('No avoid')
+                #print('No avoid')
                 if start_while == 0:
                     continue
                 elif start_while >= 1:
@@ -288,8 +290,8 @@ def main():
                 direction = choice_weight(ser, tmpString, flag2c)
                 final_direction_count[direction] += 1
 
-            print("Result:", final_direction_count)
-            print('--------------------------------------------------------------------')
+            #print("Result:", final_direction_count)
+            #print('--------------------------------------------------------------------')
 
             # 누적 변수를 기준으로 최종 회피 방향 결정
             final_direction = max(final_direction_count, key=final_direction_count.get)
@@ -297,9 +299,7 @@ def main():
 
             # Firebase에 최종 회피 방향 업데이트
             avoid_direction = {"header": final_direction}
-            header_wait = {"header": "Waiting..."}
             doc_ref_avoid.update(avoid_direction)
-            doc_ref_avoid.update(header_wait)
             start_avoid = False
             end_avoid = True
             time.sleep(1)
@@ -311,8 +311,9 @@ def main():
             doc_ref_avoid.update(header_avoid_finish)
             end_avoid = False
             trying_avoid = 0
-             
-         
+           
+
+           
 
 if __name__ == "__main__":
     main()
