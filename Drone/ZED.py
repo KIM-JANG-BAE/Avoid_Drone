@@ -105,7 +105,7 @@ async def main_async():
     save_count = 0	
    
     while True:
-        server_address = '203.255.57.136'
+        server_address = 'your server ip'
         server_port = 5258
        
        
