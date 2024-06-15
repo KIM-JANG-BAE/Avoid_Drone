@@ -36,7 +36,7 @@ async def main(websocket, path):
         print("Unknown client type:", part)
 
 if __name__ == "__main__":
-    start_server = websockets.serve(main, '203.255.57.136', 5252)
+    start_server = websockets.serve(main, 'your server IP', your port number)
 
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
