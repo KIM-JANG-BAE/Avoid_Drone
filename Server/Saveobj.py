@@ -18,7 +18,7 @@ async def file_receiver(websocket):
 
     print(f"File received and saved")
 
-start_server = websockets.serve(file_receiver, '203.255.57.136', 5260)
+start_server = websockets.serve(file_receiver, 'your server ip', your port number)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
