@@ -6,7 +6,7 @@ import websockets
 import asyncio
 #import predict
 
-base_url = "https://203.255.57.136:5254/images"
+base_url = "your storage file path"
 
 process_queue = asyncio.Queue(maxsize=10)
 
@@ -97,7 +97,7 @@ async def main(websocket):
     else:
         print("Unknown client type:", part)
 if __name__ == "__main__":
-    start_server = websockets.serve(main, '203.255.57.136', 5258)
+    start_server = websockets.serve(main, 'your server ip', your port number)
 
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
